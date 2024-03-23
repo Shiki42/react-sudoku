@@ -56,25 +56,40 @@ export default function SodukuGame() {
             for (let i = 0; i < 9; i++) {
                 for (let j = 0; j < 9; j++) {
                     if (board[i][j] === 0) {
-                        for (let value = 1; value <= 9; value++) {
-                            board[i][j] = value;
-
-                            if (validate(board) && solveHelper(board)) {
-                                return true;
+                        for (let k = 1; k <= 9; k++) {
+                            board[i][j] = k;
+                            if (validate(board)) {
+                                if (solveHelper(board)) {
+                                    return true; // Successfully solved
+                                }
                             }
-
                             board[i][j] = 0;
                         }
-
-                        return false;
+                        return false; // Backtrack
                     }
                 }
             }
-
-            return true;
+            return true; // All cells filled
         };
+    
+        const newBoard = board.map((row) => [...row]);
+        solveHelper(newBoard);
+        setBoard(newBoard);
+    };
+    
 
-        solveHelper(board);
+    const reset = () => {
+        setBoard([
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        ]);
     };
 
     return (
@@ -90,7 +105,7 @@ export default function SodukuGame() {
                                     newBoard[i][j] = (newBoard[i][j] + 1) % 10;
                                     return newBoard;
                                 })
-                                }>{cell}</td>
+                                }>{ cell }</td>
                             ))}
                         </tr>
                     ))}
@@ -98,6 +113,7 @@ export default function SodukuGame() {
             </table>
             <button onClick={() => solve(board)}>Solve</button>
             <button onClick={() => { if (validate(board)) { alert("Correct solution!") } else { alert("Incorrect solution!") }}}> Check</button>
+            <button onClick={reset}>Reset</button>
         </div>
     );
 }
