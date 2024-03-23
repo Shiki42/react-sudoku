@@ -13,6 +13,70 @@ export default function SodukuGame() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]);
 
+    const validate = (board) => {
+        const rows = new Array(9).fill(null).map(() => new Array(9).fill(false));
+        const columns = new Array(9).fill(null).map(() => new Array(9).fill(false));
+        const boxes = new Array(9).fill(null).map(() => new Array(9).fill(false));
+
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if (board[i][j] === 0) {
+                    continue;
+                }
+
+                const value = board[i][j] - 1;
+
+                if (rows[i][value]) {
+                    return false;
+                }
+
+                rows[i][value] = true;
+
+                if (columns[j][value]) {
+                    return false;
+                }
+
+                columns[j][value] = true;
+
+                const boxIndex = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+
+                if (boxes[boxIndex][value]) {
+                    return false;
+                }
+
+                boxes[boxIndex][value] = true;
+            }
+        }
+
+        return true;
+    };
+
+    const solve = (board) => {
+        const solveHelper = (board) => {
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    if (board[i][j] === 0) {
+                        for (let value = 1; value <= 9; value++) {
+                            board[i][j] = value;
+
+                            if (validate(board) && solveHelper(board)) {
+                                return true;
+                            }
+
+                            board[i][j] = 0;
+                        }
+
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        };
+
+        solveHelper(board);
+    };
+
     return (
         <div>
             <h1>Sudoku</h1>
@@ -32,28 +96,8 @@ export default function SodukuGame() {
                     ))}
                 </tbody>
             </table>
-            <table>
-    <tr>
-        <th scope="row">A</th>
-        <td>Alfa</td>
-        <td>AL fah</td>
-    </tr>
-    <tr>
-        <th scope="row">B</th>
-        <td>Bravo</td>
-        <td>BRAH voh</td>
-    </tr>
-    <tr>
-        <th scope="row">C</th>
-        <td>Charlie</td>
-        <td>CHAR lee</td>
-    </tr>
-    <tr>
-        <th scope="row">D</th>
-        <td>Delta</td>
-        <td>DELL tah</td>
-    </tr>
-</table>
+            <button onClick={() => solve(board)}>Solve</button>
+            <button onClick={() => { if (validate(board)) { alert("Correct solution!") } else { alert("Incorrect solution!") }}}> Check</button>
         </div>
     );
 }
