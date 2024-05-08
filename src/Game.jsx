@@ -1,17 +1,9 @@
 import { useState } from "react";
 
 export default function SodukuGame() {
-    const [board, setBoard] = useState([
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ]);
+    const _ = new Array(9).fill(null).map(() => new Array(9).fill(0));
+    console.log(_)
+    const [board, setBoard] = useState(_);
 
     const validate = (board) => {
         const rows = new Array(9).fill(null).map(() => new Array(9).fill(false));

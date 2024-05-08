@@ -1,0 +1,4 @@
+.active-tab {
+    --active-color: blueviolet;
+    background-color: var(--active-color);
+  }
